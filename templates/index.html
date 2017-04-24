@@ -9,123 +9,9 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
-
-
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function () {
-            // Use a "/test" namespace.
-            // An application can open a connection on multiple namespaces, and
-            // Socket.IO will multiplex all those connections on a single
-            // physical channel. If you don't care about multiple channels, you
-            // can set the namespace to an empty string.
-            var namespace = '/test';
-
-            // Connect to the Socket.IO server.
-            // The connection URL has the following format:
-            //     http[s]://<domain>:<port>[/<namespace>]
-            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-
-            // Event handler for new connections.
-            // The callback function is invoked when a connection with the
-            // server is established.
-            socket.on('connect', function () {
-                socket.emit('my_event', {data: 'I\'m connected!'});
-            });
-
-            // Event handler for server sent data.
-            // The callback function is invoked whenever the server emits data
-            // to the client. The data is then displayed in the "Received"
-            // section of the page.
-            socket.on('my_response', function (msg) {
-                $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
-            });
-
-            // Interval function that tests message latency by sending a "ping"
-            // message. The server then responds with a "pong" message and the
-            // round trip time is measured.
-            var ping_pong_times = [];
-            var start_time;
-            window.setInterval(function () {
-                start_time = (new Date).getTime();
-                // socket.emit('my_ping');
-            }, 1000);
-
-            // Handler for the "pong" message. When the pong is received, the
-            // time from the ping is stored, and the average of the last 30
-            // samples is average and displayed.
-            socket.on('my_pong', function () {
-                var latency = (new Date).getTime() - start_time;
-                ping_pong_times.push(latency);
-                ping_pong_times = ping_pong_times.slice(-30); // keep last 30 samples
-                var sum = 0;
-                for (var i = 0; i < ping_pong_times.length; i++)
-                    sum += ping_pong_times[i];
-                $('#ping-pong').text(Math.round(10 * sum / ping_pong_times.length) / 10);
-            });
-
-            // Handlers for the different forms in the page.
-            // These accept data from the user and send it to the server in a
-            // variety of ways
-            $('form#emit').submit(function (event) {
-                socket.emit('my_event', {data: $('#emit_data').val()});
-                return false;
-            });
-            $('form#broadcast').submit(function (event) {
-                socket.emit('my_broadcast_event', {data: $('#broadcast_data').val()});
-                return false;
-            });
-            $('form#join').submit(function (event) {
-                socket.emit('join', {room: $('#join_room').val()});
-                return false;
-            });
-            $('form#leave').submit(function (event) {
-                socket.emit('leave', {room: $('#leave_room').val()});
-                return false;
-            });
-            $('form#send_room').submit(function (event) {
-                socket.emit('my_room_event', {room: $('#room_name').val(), data: $('#room_data').val()});
-                return false;
-            });
-            $('form#close').submit(function (event) {
-                socket.emit('close_room', {room: $('#close_room').val()});
-                return false;
-            });
-            $('form#disconnect').submit(function (event) {
-                socket.emit('disconnect_request');
-                return false;
-            });
-        });
-    </script>
-    <style>
-        html, body {
-            height: 100%;
-        }
-
-        h1 {
-            margin-top: 0;
-        }
-
-        .page-footer {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        .middle-container {
-            min-height: calc(100% - 200px);
-            position: relative;
-        }
-
-        .send-section {
-            margin-bottom: 0;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/css/materialize.min.css">
+    <link rel="stylesheet" href="../static/css/appIO.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">-->
 </head>
 <body>
 <nav class="light-blue lighten-1" role="navigation">
@@ -145,18 +31,27 @@
     <div class="section">
 
         <div class="row playground">
-            <div class="col s6 red lighten-5">Chat</div>
+            <div class="col s6 red lighten-5">
+                <h1>
+                    Chat
+                </h1>
+                <ul id="room-msgs">
+
+                </ul>
+            </div>
             <div class="col s6">Charts</div>
         </div>
 
     </div>
     <div class="row send-section no-pad-bot">
-        <div class="col s9"><input type="text" placeholder="Type a new message"></div>
-        <div class="col s3">
-            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                <i class="material-icons right">send</i>
-            </button>
-        </div>
+        <form action="#" id="send-msg">
+            <div class="col s9"><input type="text" placeholder="Type a new message" id="send-msg-data"></div>
+            <div class="col s3">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -212,9 +107,17 @@
 
 
 <!-- Compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 
-<script src="js/init.js"></script>
+{% assets filters="jsmin", output="gen/appIO.js",
+"js/init.js", "js/appIO.js" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
+
+{% assets filters="jsmin", output="gen/libs.js",
+"js/materialize.js" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 
 </body>
 </html>
