@@ -29,21 +29,17 @@
 </nav>
 <div class="container middle-container">
     <div class="section">
-
         <div class="row playground">
-            <div class="col s6 red lighten-5">
-                <h1>
-                    Chat
-                </h1>
-                <ul id="room-msgs">
-
-                </ul>
+            <div class="col s6 red chat-msgs lighten-5">
+                <h5>Chat</h5>
+                <div id="room-msgs"></div>
             </div>
             <div class="col s6">Charts</div>
         </div>
 
     </div>
     <div class="row send-section no-pad-bot">
+        <div class="col s12">Username: <span id="username-place-holder">Connecting</span></div>
         <form action="#" id="send-msg">
             <div class="col s9"><input type="text" placeholder="Type a new message" id="send-msg-data"></div>
             <div class="col s3">
@@ -71,53 +67,20 @@
         </div>
     </div>
 </footer>
-<!--<p>Async mode is: <b>{{ async_mode }}</b></p>-->
-<!--<p>Average ping/pong latency: <b><span id="ping-pong"></span>ms</b></p>-->
-<!--<h2>Send:</h2>-->
-<!--<form id="emit" method="POST" action='#'>-->
-<!--<input type="text" name="emit_data" id="emit_data" placeholder="Message">-->
-<!--<input type="submit" value="Echo">-->
-<!--</form>-->
-<!--<form id="broadcast" method="POST" action='#'>-->
-<!--<input type="text" name="broadcast_data" id="broadcast_data" placeholder="Message">-->
-<!--<input type="submit" value="Broadcast">-->
-<!--</form>-->
-<!--<form id="join" method="POST" action='#'>-->
-<!--<input type="text" name="join_room" id="join_room" placeholder="Room Name">-->
-<!--<input type="submit" value="Join Room">-->
-<!--</form>-->
-<!--<form id="leave" method="POST" action='#'>-->
-<!--<input type="text" name="leave_room" id="leave_room" placeholder="Room Name">-->
-<!--<input type="submit" value="Leave Room">-->
-<!--</form>-->
-<!--<form id="send_room" method="POST" action='#'>-->
-<!--<input type="text" name="room_name" id="room_name" placeholder="Room Name">-->
-<!--<input type="text" name="room_data" id="room_data" placeholder="Message">-->
-<!--<input type="submit" value="Send to Room">-->
-<!--</form>-->
-<!--<form id="close" method="POST" action="#">-->
-<!--<input type="text" name="close_room" id="close_room" placeholder="Room Name">-->
-<!--<input type="submit" value="Close Room">-->
-<!--</form>-->
-<!--<form id="disconnect" method="POST" action="#">-->
-<!--<input type="submit" value="Disconnect">-->
-<!--</form>-->
-<!--<h2>Receive:</h2>-->
-<!--<div id="log"></div>-->
 
 
 <!-- Compiled and minified JavaScript -->
 
-{% assets filters="jsmin", output="gen/appIO.js",
+{% assets filters="jsmin", output="gen/libs.js",
+"js/materialize.js", "js/jquery.timeago.js" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
+{% assets output="gen/appIO.js",
 "js/init.js", "js/appIO.js" %}
 <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 
-
-{% assets filters="jsmin", output="gen/libs.js",
-"js/materialize.js" %}
-<script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
 
 </body>
 </html>
