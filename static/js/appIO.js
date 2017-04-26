@@ -36,8 +36,15 @@ $(document).ready(function () {
             users = data.users;
         }
 
-        if (data.roomMessages && data.roomMessages[room] && data.roomMessages[room].length > 0) {
-            $.each(data.roomMessages[room], function (idx, x) {
+        if (data.words) {
+            $('.word-cloud').jQCloud(data.words, {
+                autoResize: true,
+                shape: 'rectangular'
+            })
+        }
+
+        if (data.roomMessages && data.roomMessages && data.roomMessages.length > 0) {
+            $.each(data.roomMessages, function (idx, x) {
                 addMsgToChat(x)
             })
         }
@@ -69,6 +76,10 @@ $(document).ready(function () {
     socket.on('newMsg', function (msg) {
         console.log('newMsg')
         addMsgToChat(msg)
+    });
+
+    socket.on('newWordUpdate', function (words) {
+        $('.word-cloud').jQCloud('update', words);
     });
 
 

@@ -65,6 +65,10 @@ li div {
     overflow: hidden;
 }
 
+.word-cloud {
+    min-height: 475px;
+}
+
 li .username {
     font-weight: bold;
     padding-right: 10px;

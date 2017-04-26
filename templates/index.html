@@ -9,7 +9,8 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="../static/css/materialize.min.css">
+    <link rel="stylesheet" href="../static/libs/css/materialize.min.css">
+    <link rel="stylesheet" href="../static/libs/css/jqcloud.css">
     <link rel="stylesheet" href="../static/css/appIO.css">
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">-->
 </head>
@@ -30,11 +31,13 @@
 <div class="container middle-container">
     <div class="section">
         <div class="row playground">
-            <div class="col s6 red chat-msgs lighten-5">
+            <div class="col s3 red chat-msgs lighten-5">
                 <h5>Chat</h5>
                 <div id="room-msgs"></div>
             </div>
-            <div class="col s6">Charts</div>
+            <div class="col s9">
+                <div class="word-cloud"></div>
+            </div>
         </div>
 
     </div>
@@ -72,7 +75,7 @@
 <!-- Compiled and minified JavaScript -->
 
 {% assets filters="jsmin", output="gen/libs.js",
-"js/materialize.js", "js/jquery.timeago.js" %}
+"libs/js/materialize.js", "libs/js/jquery.timeago.js", "libs/js/jqcloud.js" %}
 <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 
