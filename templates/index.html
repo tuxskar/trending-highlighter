@@ -19,6 +19,7 @@
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Word Highlighter</a>
         <ul class="right hide-on-med-and-down">
             <li>Room: Cars</li>
+            <li><span id="user-cnt">0</span> Users</li>
             <li><a href="collapsible.html">Github</a></li>
         </ul>
 
@@ -44,11 +45,23 @@
     <div class="row send-section no-pad-bot">
         <div class="col s12">Username: <span id="username-place-holder">Connecting</span></div>
         <form action="#" id="send-msg">
-            <div class="col s9"><input type="text" placeholder="Type a new message" id="send-msg-data"></div>
-            <div class="col s3">
+            <div class="col s8"><input type="text" placeholder="Type a new message" id="send-msg-data"></div>
+            <div class="col">
                 <button class="btn waves-effect waves-light" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
                 </button>
+            </div>
+            <div class="col manual-send">
+                Manual Send
+                <!-- Switch -->
+                <div class="switch">
+                    <label>
+                        Off
+                        <input type="checkbox" id="manual-send">
+                        <span class="lever"></span>
+                        On
+                    </label>
+                </div>
             </div>
         </form>
     </div>

@@ -2,6 +2,9 @@
  * Created by tuxskar on 4/24/17.
  */
 $(document).ready(function () {
+
+
+
     // Use a "/test" namespace.
     // An application can open a connection on multiple namespaces, and
     // Socket.IO will multiplex all those connections on a single
@@ -9,7 +12,27 @@ $(document).ready(function () {
     // can set the namespace to an empty string.
     var namespace = '';
 
-    var room = 'cars', username, users;
+    var room = 'cars', username, users, manualSend = false;
+
+    $('#manual-send').change(function (e) {
+        manualSend = $(this).is(':checked');
+    });
+
+    function sendRandomSentence() {
+        if (manualSend) return;
+        var randomSentences = ['que no quiero que sigas a lo tuyo', 'vale', '¿como estas?', 'no planches más',
+                '¿vemos una peli?'],
+            selectedIdx = Math.floor((Math.random() * randomSentences.length)),
+            msg = randomSentences[selectedIdx];
+        $('#send-msg-data').val(msg);
+
+        setTimeout(function () {
+            //do what you need here
+            $('form#send-msg').submit();
+        }, 1000);
+    }
+
+    var autoSendFunc = setInterval(sendRandomSentence, 3000);
 
     // Connect to the Socket.IO server.
     // The connection URL has the following format:
@@ -74,12 +97,17 @@ $(document).ready(function () {
     }
 
     socket.on('newMsg', function (msg) {
-        console.log('newMsg')
         addMsgToChat(msg)
     });
 
     socket.on('newWordUpdate', function (words) {
         $('.word-cloud').jQCloud('update', words);
+    });
+
+    socket.on('userCnt', function (data) {
+        if (!data) return;
+        var cnt = data.cnt;
+        $('#user-cnt').text(cnt);
     });
 
 
@@ -90,7 +118,6 @@ $(document).ready(function () {
         var $msgInput = $('#send-msg-data'),
             msg = $msgInput.val();
         $msgInput.val('');
-        console.log('Sending new msg: ', msg);
         socket.emit('newMsg', {room: room, data: msg, username: username});
         return false;
     });

@@ -73,3 +73,17 @@ li .username {
     font-weight: bold;
     padding-right: 10px;
 }
+
+.manual-send {
+    font-size: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.container {
+    width: 90%;
+}
+
+#user-cnt {
+    margin-left: 10px;
+}

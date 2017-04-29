@@ -36,14 +36,27 @@ def join(message):
     username = list(users.keys())[idx]
     join_data = {'roomMessages': MessagesCollection.to_json(room), 'username': username, 'users': users,
                  'words': get_word_counter_processed()}
-    print(join_data)
     send(join_data)
-    # send(json.dumps({'messages': MessagesCollection[room]}, default=json_dates_handler))
+
+    emit_user_count(room)
+
+
+@socketio.on('disconnect')
+def test_disconnect():
+    emit_user_count()
+
+
+def emit_user_count(room=None):
+    if room:
+        rooms = [room]
+    else:
+        rooms = MessagesCollection.keys()
+    for room in rooms:
+        emit('userCnt', dict(cnt=len(socketio.server.manager.rooms.get('/', {}).get(room))), room=room)
 
 
 @socketio.on('newMsg')
 def new_msg(user_message):
-    print(user_message)
     sent_msg = user_message.get('data')
     username = user_message.get('username')
     new_message = Message(msg=sent_msg, username=username)
@@ -76,4 +89,4 @@ def get_word_counter_processed():
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, host='0.0.0.0')
