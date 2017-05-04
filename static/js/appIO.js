@@ -31,6 +31,7 @@ $(document).ready(function () {
         if (data.words)
             $('.word-cloud').jQCloud(data.words, {
                 autoResize: true,
+                delay: 5,
                 shape: 'rectangular'
             });
 
@@ -94,6 +95,7 @@ $(document).ready(function () {
             $('<div/>').addClass('msg-text').text(msg.msg)
             ).css('color', color)
         );
+        roomMsgs.find('div').slice(30).remove()
     }
 
     function sendRandomSentence() {

@@ -60,6 +60,7 @@ def new_msg(user_message):
         MessagesCollection[room] = []
 
     MessagesCollection[room].append(new_message)
+    MessagesCollection[room] = MessagesCollection[room][:30]
     emit('newMsg', new_message.to_json(), room=room)
 
     emit('newWordUpdate', get_word_counter_processed(room), room=room)
