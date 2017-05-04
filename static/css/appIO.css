@@ -69,9 +69,17 @@ li div {
     min-height: 475px;
 }
 
-li .username {
+.username {
     font-weight: bold;
-    padding-right: 10px;
+    float: left;
+}
+
+.time {
+    float: right;
+}
+
+.msg-text {
+    clear: both;
 }
 
 .manual-send {
